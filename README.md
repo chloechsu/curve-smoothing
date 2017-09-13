@@ -12,4 +12,7 @@ the same rate as small bumps.
 With a high-pass filter on the flow direction, we can shrink small bumps while
 preserving large features.
 
+To see a more detailed technical explanation, please refer to my presentation
+slides (slides.pdf).
+
 For documentation of Keenan's original package, see doc/libddg_userguide.pdf
