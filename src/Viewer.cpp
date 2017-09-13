@@ -22,13 +22,16 @@ namespace DDG
 
    WillmoreFlow1D* Viewer::willmoreFlow = NULL;
    IsometricWillmoreFlow1D* Viewer::isometricWillmoreFlow = NULL;
-   Viewer::FlowType Viewer::flowType = flowWillmore;
+   Viewer::FlowType Viewer::flowType = flowIsometricWillmore;
 
    bool Viewer::animate = false;
 
    double Viewer::timeStep;
-   int Viewer::timeStepExponent = -9;
+   int Viewer::timeStepExponent = -3;
    int Viewer::timeStepMantissa = 1;
+   double Viewer::lambda = 0.45;
+   double Viewer::mu = 0.46;
+   int Viewer::filterPolynomialPower = 10;
    void Viewer :: updateTimeStep( void )
    {
       timeStep = (double) timeStepMantissa *
@@ -184,7 +187,7 @@ namespace DDG
       }
       else if( flowType == flowIsometricWillmore )
       {
-         isometricWillmoreFlow->integrate( timeStep );
+         isometricWillmoreFlow->integrate( timeStep, lambda, mu, filterPolynomialPower );
       }
 
       mesh.center();
@@ -318,6 +321,23 @@ namespace DDG
             }
             updateTimeStep();
             break;
+         case '.':
+            lambda += 0.01;
+            break;
+         case ',':
+            lambda -= 0.01;
+            break;
+         case '>':
+            mu += 0.01;
+            break;
+         case '<':
+            mu -= 0.01;
+            break;
+         case ']':
+            filterPolynomialPower++;
+            break;
+         case '[':
+            filterPolynomialPower--;
          case 'l':
             mWillmoreFlow();
             break;
@@ -663,7 +683,7 @@ namespace DDG
       {
          stringstream ss;
          ss.precision( 3 );
-         ss << "time step: " << scientific << timeStep;
+         ss << "time step: " << scientific << timeStep << " lambda: " << fixed << lambda << " mu: " << mu << " pass-band freq: " << 2 - 1/lambda + 1/mu <<" filter polynomial power:"<<filterPolynomialPower;
          string s = ss.str();
          glRasterPos2f( W-9*(s.length()+1), H-32 );
          for( size_t i = 0; i < s.length(); i++ )

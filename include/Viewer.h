@@ -126,6 +126,10 @@ namespace DDG
          static void updateTimeStep( void );
          static void drawFlowInfo( void );
 
+         static double lambda;
+         static double mu;
+         static int filterPolynomialPower;
+
          static bool animate;
    };
 }

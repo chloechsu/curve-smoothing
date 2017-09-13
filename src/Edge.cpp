@@ -6,9 +6,7 @@ namespace DDG
    double Edge :: length( void ) const
    // returns the edge length
    {
-      // TODO 
-
-      return 0; // <---- not correct!
+      return (he->vertex->position - he->flip->vertex->position).norm();
    }
 }
 

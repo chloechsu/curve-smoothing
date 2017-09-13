@@ -13,9 +13,7 @@ namespace DDG
    // assuming this vertex is a vertex of a closed polygon in the x-y plane,
    // returns the length of the barycentric dual edge associated with this vertex
    {
-      // TODO compute the dual length -- you may as well call Edge::length()!
-
-      return 0; // <---- not correct!
+       return 0.5 * he->edge->length() + 0.5 * he->flip->next->edge->length();
    }
 
    double Vertex :: curvature( void ) const
@@ -23,17 +21,28 @@ namespace DDG
    // returns the (pointwise) curvature associated with this vertex
    {
       // TODO get the three relevant vertex coordinates a, b, and c
-
+      Vector a = he->flip->next->next->vertex->position;
+      Vector b = position;
+      Vector c = he->next->vertex->position;
       // TODO compute the edge vectors u and v
-
+      Vector u = b - a;
+      Vector v = c - b;
+      Vector uhat = u/u.norm();
+      Vector vhat = v/v.norm();
       // TODO compute the exterior angle theta between u and v
       // (be careful about sign!)
-
+      double theta = asin(cross(uhat,vhat).z);
+      if(dot(uhat,vhat) < 0)
+      {
+          if(theta > 0)
+            theta = acos(0)*2 - theta;
+          if(theta < 0)
+            theta = -acos(0)*2 - theta;
+      }
       // TODO compute the dual length L
-
+      double L = dualLength();
       // TODO return the pointwise curvature
-
-      return 0; // <---- not correct!
+      return theta/L;
    }
 
    Vector Vertex::normal( void ) const
