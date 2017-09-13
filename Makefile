@@ -3,10 +3,10 @@
 # Specify library locations here (add or remove "#" marks to comment/uncomment lines for your platform)
 
 # Mac OS X
-DDG_INCLUDE_PATH      =
-DDG_LIBRARY_PATH      =
+DDG_INCLUDE_PATH      = -I/usr/local/include
+DDG_LIBRARY_PATH      = -L/usr/local/lib
 DDG_BLAS_LIBS         = -framework Accelerate
-DDG_SUITESPARSE_LIBS  = -lspqr -lumfpack -lcholmod -lmetis -lcolamd -lccolamd -lcamd -lamd -lm
+DDG_SUITESPARSE_LIBS  = -lspqr -lcholmod -lmetis -lcolamd -lccolamd -lcamd -lamd -lm -lsuitesparseconfig -ltbb -lumfpack
 DDG_OPENGL_LIBS       = -framework OpenGL -framework GLUT
 
 # # Linux
@@ -28,8 +28,8 @@ DDG_OPENGL_LIBS       = -framework OpenGL -framework GLUT
 TARGET = ddg
 CC = g++
 LD = g++
-CFLAGS = -O3 -Wall -Werror -ansi -pedantic  $(DDG_INCLUDE_PATH) -I./include -I./src
-LFLAGS = -O3 -Wall -Werror -ansi -pedantic $(DDG_LIBRARY_PATH)
+CFLAGS = -O3 -Wall -Werror -ansi -pedantic  $(DDG_INCLUDE_PATH) -I./include -I./src -Wno-deprecated-declarations -Qunused-arguments
+LFLAGS = -O3 -Wall -Werror -ansi -pedantic -Qunused-arguments $(DDG_LIBRARY_PATH)
 LIBS = $(DDG_OPENGL_LIBS) $(DDG_SUITESPARSE_LIBS) $(DDG_BLAS_LIBS)
 
 ## !! Do not edit below this line -- dependencies can be updated by running ./configure ###############
